@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 10
+    @FocusState private var amountIsFocused: Bool
 
     let percentages = [10, 15, 20, 25, 0]
     
@@ -30,6 +31,7 @@ struct ContentView: View {
                 Section {
                     TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "PHP"))
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
 
                     Picker("Number of People", selection: $numberOfPeople) {
                         ForEach(2 ..< 100) {
@@ -52,6 +54,13 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Tip Splitter")
+            .toolbar {
+                if amountIsFocused {
+                    Button ("Done") {
+                        amountIsFocused = false
+                    }
+                }
+            }
         }
     }
 }
